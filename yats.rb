@@ -121,7 +121,12 @@ class YetAnotherThingForSSH
   end
 
   def ssh_connect_to(server: nil)
-    run_terminal_with command: "ssh #{server}"
+    if ENV["YATS_USERNAME"]
+      command = "ssh #{ENV["YATS_USERNAME"]}@#{server}"
+    else
+      command = "ssh #{server}"
+    end
+    run_terminal_with command: command
   end
 
   def run_terminal_with(command: nil)
