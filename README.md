@@ -56,4 +56,5 @@ TODO
 
 * I'm not really doing anything special with reservations for multiple instances at once.
 * Per-instance username configuration
+* Do something with instance results that have a missing IP or name
 
