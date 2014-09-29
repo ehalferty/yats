@@ -11,7 +11,7 @@ Install
 Put the ruby script somewhere in your path, make sure you have the right gems installed:
 
 ```
-gem install aws-sdk-core --pre
+gem install aws-sdk-core
 ```
 
 ```
