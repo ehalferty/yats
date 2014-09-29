@@ -1,12 +1,13 @@
 require 'aws-sdk-core'
 require 'curses'
+require 'pry'
 
 EC2_LIST_CACHE_TIME_IN_SECONDS = 86400 # One day
 EC2_LIST_CACHE_FILENAME = "cached_ec2_list.txt"
 
 class YetAnotherThingForSSH
   def initialize
-    @ec2 = Aws::EC2.new
+    @ec2 = Aws::EC2::Client.new
     @my_instances = all_my_instances
     run
   end
@@ -26,11 +27,21 @@ class YetAnotherThingForSSH
                       name: name
                     }
                 }
-                .select { |instance| terms.all? { |term|
-                    instance[:name].include? term }
+                .reject { |match|
+                  [
+                    match[:ip] == "",
+                    match[:ip].nil?,
+                    match[:name] == "",
+                    match[:name].nil?
+                  ].any?
+                }
+                .select { |instance|
+                  terms.all? { |term|
+                    instance[:name].include? term 
+                  }
                 }
                 .sort_by { |instance|
-                    instance[:name]
+                   instance[:name]
                 }
     configure_curses
     cursor_pos = 0
@@ -137,5 +148,4 @@ class YetAnotherThingForSSH
 end
 
 YetAnotherThingForSSH.new
-
 
